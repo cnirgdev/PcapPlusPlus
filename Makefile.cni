@@ -4,6 +4,16 @@ CONFIGURE_FILES := $(PCPP_ROOT)/mk/platform.mk
 PCPP_VERSION := $(shell  grep -w "define PCAPPLUSPLUS_VERSION " ./Common++/header/PcapPlusPlusVersion.h | sed -e 's/^.*_VERSION "//g' -e 's/"//g')
 PCPP_VERSION_OFFICIAL := $(shell grep -w "define PCAPPLUSPLUS_VERSION_OFFICIAL " ./Common++/header/PcapPlusPlusVersion.h | sed -e 's/^.*OFFICIAL "//g' -e 's/"//g')
 
+SDK_ROOT := $(abspath $(shell pwd)/../../otx-sdk-6.2.0)
+
+
+ifeq ($(PLATFORM), edge)
+        MARVELL_TOOLS_ROOT := $(SDK_ROOT)/marvell-tools-233.0
+        # compiler
+        CXX := $(MARVELL_TOOLS_ROOT)/bin/aarch64-marvell-linux-gnu-g++
+endif
+
+
 all: intro libs
 	@echo "=== PcapPlusPlus: DONE."
 
@@ -18,7 +28,7 @@ $(CONFIGURE_FILES):
 
 libs: $(CONFIGURE_FILES)
 	@echo "=== PcapPlusPlus: libs"
-	make -s -f Makefile libs
+	CXX=$(CXX) make -s -f Makefile libs
 
 # PcapPlusPlus Makefile complains if platform.mk isn't there.
 # Just in case, create it with configure before calling clean.

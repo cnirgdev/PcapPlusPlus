@@ -6,9 +6,17 @@ LIB_PREFIX := lib
 
 LIB_EXT := .a
 
-CXX := g++
+ifeq ($(PLATFORM), edge)
+	CXX := /usr/local/Cavium_Networks/OCTEONTX-SDK/marvell-tools-233.0/bin/aarch64-marvell-linux-gnu-g++
+else
+	CXX := g++
+endif
 
-CC := gcc
+ifeq ($(PLATFORM), edge)
+	CC := /usr/local/Cavium_Networks/OCTEONTX-SDK/marvell-tools-233.0/bin/aarch64-marvell-linux-gnu-gcc 
+else
+	CC := gcc
+endif
 
 AR := ar
 
